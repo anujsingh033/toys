@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToyWonder | Magical Toys For Happy Kids</title>
+    <meta name="description" content="Discover fun, learning, and adventure toys for boys and girls. Premium quality toys with magical shopping experience.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        candy: {
+                            pink: '#FF6B9D',
+                            purple: '#C44DFF',
+                            blue: '#4D79FF',
+                            green: '#4DFF88',
+                            yellow: '#FFD93D',
+                            orange: '#FF8C42',
+                            red: '#FF4D4D'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Fredoka One"', 'cursive'],
+                        body: ['"Nunito"', 'sans-serif'],
+                        fun: ['"Baloo 2"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+        body { font-family: 'Nunito', sans-serif; }
+        .font-fun { font-family: 'Baloo 2', cursive; }
+        .font-display { font-family: 'Fredoka One', cursive; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass {
+            background: rgba(30, 20, 50, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cursor-glow {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C44DFF 50%, #4D79FF 100%);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .loader-bounce {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            animation: bounce 1s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+        
+        .floating { animation: float 6s ease-in-out infinite; }
+        .floating-delay-1 { animation: float 6s ease-in-out 1s infinite; }
+        .floating-delay-2 { animation: float 6s ease-in-out 2s infinite; }
+        .floating-delay-3 { animation: float 6s ease-in-out 3s infinite; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(2deg); }
+            66% { transform: translateY(-8px) rotate(-1deg); }
+        }
+        
+        .sparkle { animation: sparkle 2s ease-in-out infinite; }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        .countdown-item {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            backdrop-filter: blur(10px);
+        }
+        .dark .countdown-item {
+            background: linear-gradient(135deg, rgba(30,20,50,0.9), rgba(30,20,50,0.7));
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .wave-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        
+        .nav-scrolled {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(20px) !important;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1) !important;
+        }
+        .dark .nav-scrolled {
+            background: rgba(30, 20, 50, 0.9) !important;
+        }
+        
+        .cart-sidebar {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .cart-sidebar.open { transform: translateX(0); }
+        
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+        .mobile-menu.open { transform: translateX(0); }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #FF6B9D, #C44DFF); border-radius: 10px; }
+        
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #FF6B9D, #C44DFF, #4D79FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5), 0 0 20px rgba(255, 107, 157, 0.3);
+        }
+        
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 dark:from-gray-900 dark:via-purple-950 dark:to-indigo-950 text-gray-800 dark:text-gray-100 transition-colors duration-500 overflow-x-hidden">
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader-bounce mb-6"></div>
+        <h2 class="font-display text-white text-2xl mb-2">ToyWonder</h2>
+        <p class="text-white/80 font-fun text-lg">Loading magical toys...</p>
+        <div class="w-48 h-2 bg-white/30 rounded-full mt-4 overflow-hidden">
+            <div class="h-full bg-white rounded-full" id="loaderBar" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow hidden lg:block" id="cursorGlow"></div>
+
+    <!-- Floating Particles Container -->
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="glass rounded-2xl px-4 lg:px-6 py-3 flex items-center justify-between shadow-lg">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2">
+                    <span class="text-3xl floating">🧸</span>
+                    <span class="font-display text-xl md:text-2xl gradient-text">ToyWonder</span>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="#hero" class="font-fun font-semibold hover:text-candy-pink transition-colors relative group">
+                        Home
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-candy-pink transition-all group-hover:w-full rounded-full"></span>
+                    </a>
+                    <a href="#categories" class="font-fun font-semibold hover:text-candy-purple transition-colors relative group">
+                        Categories
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-candy-purple transition-all group-hover:w-full rounded-full"></span>
+                    </a>
+                    <a href="#featured" class="font-fun font-semibold hover:text-candy-blue transition-colors relative group">
+                        Featured
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-candy-blue transition-all group-hover:w-full rounded-full"></span>
+                    </a>
+                    <a href="#offer" class="font-fun font-semibold hover:text-candy-orange transition-colors relative group">
+                        Offers
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-candy-orange transition-all group-hover:w-full rounded-full"></span>
+                    </a>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-3">
+                    <!-- Search -->
+                    <div class="relative hidden md:block group">
+                        <input type="text" placeholder="Search toys..." class="w-0 focus:w-48 transition-all duration-300 pl-10 pr-4 py-2 rounded-full bg-white/50 dark:bg-gray-800/50 border border-transparent focus:border-candy-pink outline-none text-sm">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                    </div>
+
+                    <!-- Wishlist -->
+                    <button class="p-2 hover:bg-white/50 dark:hover:bg-gray-800/50 rounded-full transition relative">
+                        <i data-lucide="heart" class="w-5 h-5 hover:text-candy-pink transition"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-candy-pink text-white text-xs rounded-full flex items-center justify-center font-bold">2</span>
+                    </button>
+
+                    <!-- Cart -->
+                    <button id="cartBtn" class="p-2 hover:bg-white/50 dark:hover:bg-gray-800/50 rounded-full transition relative">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 hover:text-candy-blue transition"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-candy-blue text-white text-xs rounded-full flex items-center justify-center font-bold" id="cartCount">0</span>
+                    </button>
+
+                    <!-- Dark Mode -->
+                    <button id="themeToggle" class="p-2 hover:bg-white/50 dark:hover:bg-gray-800/50 rounded-full transition">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-candy-yellow"></i>
+                    </button>
+
+                    <!-- Mobile Menu -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 hover:bg-white/50 rounded-full transition">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu fixed inset-0 z-[60] lg:hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="mobileMenuOverlay"></div>
+        <div class="absolute left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 p-8 pt-20 space-y-6 shadow-2xl">
+            <button id="closeMobileMenu" class="absolute top-6 right-6 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <a href="#hero" class="block font-fun text-xl font-bold hover:text-candy-pink transition mobile-link">🏠 Home</a>
+            <a href="#categories" class="block font-fun text-xl font-bold hover:text-candy-purple transition mobile-link">📂 Categories</a>
+            <a href="#featured" class="block font-fun text-xl font-bold hover:text-candy-blue transition mobile-link">⭐ Featured</a>
+            <a href="#offer" class="block font-fun text-xl font-bold hover:text-candy-orange transition mobile-link"> Offers</a>
+            <a href="#boys" class="block font-fun text-xl font-bold hover:text-candy-blue transition mobile-link"> Boys Toys</a>
+            <a href="#girls" class="block font-fun text-xl font-bold hover:text-candy-pink transition mobile-link"> Girls Toys</a>
+            <hr class="border-gray-200 dark:border-gray-700">
+            <div class="relative">
+                <input type="text" placeholder="Search toys..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 outline-none">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="fixed inset-0 z-[60] hidden" id="cartOverlay">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="closeCart"></div>
+        <div class="cart-sidebar absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl flex flex-col">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="font-display text-2xl gradient-text"> Your Cart</h3>
+                <button id="closeCartBtn" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6" id="cartItems">
+                <div class="text-center py-12 text-gray-400">
+                    <span class="text-6xl mb-4 block">🛒</span>
+                    <p class="font-fun text-lg">Your cart is empty!</p>
+                    <p class="text-sm mt-2">Add some magical toys!</p>
+                </div>
+            </div>
+            <div class="p-6 border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-pink-50 to-blue-50 dark:from-gray-800 dark:to-gray-800">
+                <div class="flex justify-between mb-4 font-fun text-lg">
+                    <span>Total:</span>
+                    <span class="font-bold gradient-text" id="cartTotal">$0.00</span>
+                </div>
+                <button class="w-full py-4 bg-gradient-to-r from-candy-pink to-candy-purple text-white rounded-2xl font-display text-lg hover:shadow-lg hover:scale-[1.02] transition-all">
+                    Checkout ✨
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative min-h-screen flex items-center overflow-hidden pt-20">
+        <!-- Animated Background Shapes -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-candy-pink/20 rounded-full blur-3xl floating"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-candy-purple/20 rounded-full blur-3xl floating-delay-1"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-candy-blue/10 rounded-full blur-3xl floating-delay-2"></div>
+            
+            <!-- Floating Toys -->
+            <div class="floating text-6xl absolute top-32 left-[15%] opacity-80"></div>
+            <div class="floating-delay-1 text-5xl absolute top-40 right-[10%] opacity-70">🎈</div>
+            <div class="floating-delay-2 text-7xl absolute bottom-32 left-[8%] opacity-80">🤖</div>
+            <div class="floating-delay-3 text-5xl absolute bottom-40 right-[15%] opacity-70">🦄</div>
+            <div class="floating text-4xl absolute top-[60%] left-[5%] opacity-60">⭐</div>
+            <div class="floating-delay-1 text-4xl absolute top-[25%] right-[25%] opacity-60">🧩</div>
+            <div class="floating-delay-2 text-5xl absolute bottom-[15%] left-[30%] opacity-70">🎮</div>
+        </div>
+
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="text-center lg:text-left space-y-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur rounded-full border border-candy-pink/30">
+                        <span class="text-lg">✨</span>
+                        <span class="font-fun text-sm font-semibold text-candy-pink">New Collection 2024</span>
+                    </div>
+                    
+                    <h1 class="font-display text-5xl md:text-7xl leading-tight">
+                        <span class="block opacity-0 hero-line">Magical Toys</span>
+                        <span class="block gradient-text opacity-0 hero-line">For Happy Kids</span>
+                    </h1>
+                    
+                    <p class="font-fun text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-lg mx-auto lg:mx-0 opacity-0 hero-text">
+                        Discover fun, learning, and adventure toys for boys & girls. Every toy tells a story! 🌟
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start opacity-0 hero-buttons">
+                        <button class="group px-8 py-4 bg-gradient-to-r from-candy-pink to-candy-purple text-white rounded-2xl font-display text-lg shadow-lg shadow-candy-pink/30 hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+                            Shop Now
+                            <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                        <button class="px-8 py-4 bg-white/60 dark:bg-gray-800/60 backdrop-blur rounded-2xl font-display text-lg border-2 border-candy-blue/30 hover:border-candy-blue hover:bg-candy-blue/10 transition-all flex items-center gap-2">
+                            <span class="text-2xl">🎮</span>
+                            Explore Toys
+                        </button>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="flex gap-8 justify-center lg:justify-start pt-4 opacity-0 hero-stats">
+                        <div class="text-center">
+                            <p class="font-display text-3xl text-candy-pink">500+</p>
+                            <p class="font-fun text-sm text-gray-500">Toys</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-display text-3xl text-candy-purple">50K+</p>
+                            <p class="font-fun text-sm text-gray-500">Happy Kids</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-display text-3xl text-candy-blue">4.9⭐</p>
+                            <p class="font-fun text-sm text-gray-500">Rating</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image / 3D Cards -->
+                <div class="relative">
+                    <div class="relative w-full max-w-lg mx-auto">
+                        <!-- Main Card -->
+                        <div class="relative z-10 glass rounded-3xl p-6 shadow-2xl hover-lift hero-card-main">
+                            <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 dark:from-pink-900/30 dark:via-purple-900/30 dark:to-blue-900/30 flex items-center justify-center">
+                                <span class="text-[150px] floating">🧸</span>
+                            </div>
+                            <div class="mt-4 flex justify-between items-center">
+                                <div>
+                                    <h3 class="font-display text-xl">Premium Teddy Bear</h3>
+                                    <p class="font-fun text-candy-pink font-bold">$29.99</p>
+                                </div>
+                                <button class="p-3 bg-candy-pink text-white rounded-full hover:scale-110 transition-transform add-to-cart" data-name="Premium Teddy Bear" data-price="29.99">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating Mini Cards -->
+                        <div class="absolute -top-8 -right-8 glass rounded-2xl p-4 shadow-xl floating-delay-1 z-20 hero-card-float">
+                            <span class="text-4xl"></span>
+                            <p class="font-fun text-xs font-bold mt-1">Space Rocket</p>
+                        </div>
+                        <div class="absolute -bottom-4 -left-8 glass rounded-2xl p-4 shadow-xl floating-delay-2 z-20 hero-card-float">
+                            <span class="text-4xl">🤖</span>
+                            <p class="font-fun text-xs font-bold mt-1">Robot Buddy</p>
+                        </div>
+                        <div class="absolute top-1/2 -right-12 glass rounded-2xl p-3 shadow-xl floating-delay-3 z-20 hero-card-float">
+                            <span class="text-3xl">🎮</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wave SVG -->
+        <div class="wave-bg">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                <path d="M0 60L48 55C96 50 192 40 288 45C384 50 480 70 576 75C672 80 768 70 864 60C960 50 1056 40 1152 45C1248 50 1344 70 1392 80L1440 90V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0V60Z" fill="currentColor" fill-opacity="0.1"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- CATEGORIES SECTION -->
+    <section id="categories" class="py-20 relative">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 bg-candy-yellow/20 text-candy-yellow rounded-full font-fun text-sm mb-4">🎯 BROWSE</span>
+                <h2 class="font-display text-4xl md:text-5xl">Toy Categories</h2>
+                <p class="font-fun text-gray-500 mt-4">Find the perfect toy for every little adventurer!</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Category Cards -->
+                <div class="category-card group cursor-pointer">
+                    <div class="glass rounded-3xl p-6 text-center hover-lift h-full transition-all border-2 border-transparent hover:border-candy-pink/30">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform shadow-lg">
+                            🦸
+                        </div>
+                        <h3 class="font-fun font-bold text-lg">Action Toys</h3>
+                        <p class="text-sm text-gray-500 mt-1">42 Items</p>
+                    </div>
+                </div>
+
+                <div class="category-card group cursor-pointer">
+                    <div class="glass rounded-3xl p-6 text-center hover-lift h-full transition-all border-2 border-transparent hover:border-candy-pink/30">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform shadow-lg">
+                            👸
+                        </div>
+                        <h3 class="font-fun font-bold text-lg">Dolls & Barbie</h3>
+                        <p class="text-sm text-gray-500 mt-1">38 Items</p>
+                    </div>
+                </div>
+
+                <div class="category-card group cursor-pointer">
+                    <div class="glass rounded-3xl p-6 text-center hover-lift h-full transition-all border-2 border-transparent hover:border-candy-blue/30">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform shadow-lg">
+                            🏎️
+                        </div>
+                        <h3 class="font-fun font-bold text-lg">Remote Cars</h3>
+                        <p class="text-sm text-gray-500 mt-1">25 Items</p>
+                    </div>
+                </div>
+
+                <div class="category-card group cursor-pointer">
+                    <div class="glass rounded-3xl p-6 text-center hover-lift h-full transition-all border-2 border-transparent hover:border-candy-green/30">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform shadow-lg">
+                            🧠
+                        </div>
+                        <h3 class="font-fun font-bold text-lg">Educational</h3>
+                        <p class="text-sm text-gray-500 mt-1">56 Items</p>
+                    </div>
+                </div>
+
+                <div class="category-card group cursor-pointer">
+                    <div class="glass rounded-3xl p-6 text-center hover-lift h-full transition-all border-2 border-transparent hover:border-candy-yellow/30">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform shadow-lg">
+                            🧱
+                        </div>
+                        <h3 class="font-fun font-bold text-lg">LEGO & Blocks</h3>
+                        <p class="text-sm text-gray-500 mt-1">64 Items</p>
+                    </div>
+                </div>
+
+                <div class="category-card group cursor-pointer">
+                    <div class="glass rounded-3xl p-6 text-center hover-lift h-full transition-all border-2 border-transparent hover:border-candy-purple/30">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform shadow-lg">
+                            🧸
+                        </div>
+                        <h3 class="font-fun font-bold text-lg">Plush Bears</h3>
+                        <p class="text-sm text-gray-500 mt-1">48 Items</p>
+                    </div>
+                </div>
+
+                <div class="category-card group cursor-pointer">
+                    <div class="glass rounded-3xl p-6 text-center hover-lift h-full transition-all border-2 border-transparent hover:border-candy-orange/30">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform shadow-lg">
+                            🎮
+                        </div>
+                        <h3 class="font-fun font-bold text-lg">Video Games</h3>
+                        <p class="text-sm text-gray-500 mt-1">32 Items</p>
+                    </div>
+                </div>
+
+                <div class="category-card group cursor-pointer">
+                    <div class="glass rounded-3xl p-6 text-center hover-lift h-full transition-all border-2 border-transparent hover:border-candy-pink/30">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform shadow-lg">
+                            🍼
+                        </div>
+                        <h3 class="font-fun font-bold text-lg">Baby Toys</h3>
+                        <p class="text-sm text-gray-500 mt-1">45 Items</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED TOYS SECTION -->
+    <section id="featured" class="py-20 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-50/50 to-transparent dark:via-purple-900/20"></div>
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 bg-candy-blue/20 text-candy-blue rounded-full font-fun text-sm mb-4">⭐ BESTSELLERS</span>
+                <h2 class="font-display text-4xl md:text-5xl">Featured Toys</h2>
+                <p class="font-fun text-gray-500 mt-4">Handpicked favorites loved by kids everywhere!</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card group">
+                    <div class="glass rounded-3xl overflow-hidden hover-lift">
+                        <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&q=80" alt="Super Hero Figure" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                            <span class="absolute top-4 left-4 px-3 py-1 bg-candy-red text-white rounded-full text-xs font-bold font-fun">-30%</span>
+                            <button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-gray-800/80 rounded-full hover:bg-candy-pink hover:text-white transition wishlist-btn">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6">
+                                <button class="px-6 py-2 bg-white text-gray-800 rounded-full font-fun font-bold hover:bg-candy-pink hover:text-white transition add-to-cart" data-name="Super Hero Figure" data-price="34.99">Add to Cart 🛒</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-1 mb-2">
+                                <span class="text-candy-yellow">★★★★★</span>
+                                <span class="text-xs text-gray-400">(128)</span>
+                            </div>
+                            <h3 class="font-fun font-bold text-lg">Super Hero Figure Set</h3>
+                            <p class="text-sm text-gray-500 mt-1">Action-packed adventure figures</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <div>
+                                    <span class="font-display text-xl text-candy-blue">$34.99</span>
+                                    <span class="text-sm text-gray-400 line-through ml-2">$49.99</span>
+                                </div>
+                                <button class="p-3 bg-candy-blue text-white rounded-full hover:scale-110 transition-transform add-to-cart" data-name="Super Hero Figure" data-price="34.99">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card group">
+                    <div class="glass rounded-3xl overflow-hidden hover-lift">
+                        <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-pink-100 to-rose-100 dark:from-pink-900/30 dark:to-rose-900/30">
+                            <img src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&q=80" alt="Barbie Princess" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                            <span class="absolute top-4 left-4 px-3 py-1 bg-candy-purple text-white rounded-full text-xs font-bold font-fun">NEW</span>
+                            <button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-gray-800/80 rounded-full hover:bg-candy-pink hover:text-white transition wishlist-btn">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6">
+                                <button class="px-6 py-2 bg-white text-gray-800 rounded-full font-fun font-bold hover:bg-candy-pink hover:text-white transition add-to-cart" data-name="Barbie Princess House" data-price="59.99">Add to Cart 🛒</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-1 mb-2">
+                                <span class="text-candy-yellow">★★★★★</span>
+                                <span class="text-xs text-gray-400">(256)</span>
+                            </div>
+                            <h3 class="font-fun font-bold text-lg">Barbie Princess House</h3>
+                            <p class="text-sm text-gray-500 mt-1">Dream house with 10 rooms</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="font-display text-xl text-candy-purple">$59.99</span>
+                                <button class="p-3 bg-candy-purple text-white rounded-full hover:scale-110 transition-transform add-to-cart" data-name="Barbie Princess House" data-price="59.99">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card group">
+                    <div class="glass rounded-3xl overflow-hidden hover-lift">
+                        <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-green-100 to-teal-100 dark:from-green-900/30 dark:to-teal-900/30">
+                            <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&q=80" alt="RC Monster Truck" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                            <span class="absolute top-4 left-4 px-3 py-1 bg-candy-orange text-white rounded-full text-xs font-bold font-fun">HOT</span>
+                            <button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-gray-800/80 rounded-full hover:bg-candy-pink hover:text-white transition wishlist-btn">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6">
+                                <button class="px-6 py-2 bg-white text-gray-800 rounded-full font-fun font-bold hover:bg-candy-pink hover:text-white transition add-to-cart" data-name="RC Monster Truck" data-price="44.99">Add to Cart 🛒</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-1 mb-2">
+                                <span class="text-candy-yellow">★★★★☆</span>
+                                <span class="text-xs text-gray-400">(89)</span>
+                            </div>
+                            <h3 class="font-fun font-bold text-lg">RC Monster Truck</h3>
+                            <p class="text-sm text-gray-500 mt-1">4WD remote control beast</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="font-display text-xl text-candy-green">$44.99</span>
+                                <button class="p-3 bg-candy-green text-white rounded-full hover:scale-110 transition-transform add-to-cart" data-name="RC Monster Truck" data-price="44.99">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card group">
+                    <div class="glass rounded-3xl overflow-hidden hover-lift">
+                        <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30">
+                            <img src="https://images.unsplash.com/photo-1559715541-5daf8a0296d0?auto=format&fit=crop&q=80" alt="Teddy Bear XL" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                            <button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-gray-800/80 rounded-full hover:bg-candy-pink hover:text-white transition wishlist-btn">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6">
+                                <button class="px-6 py-2 bg-white text-gray-800 rounded-full font-fun font-bold hover:bg-candy-pink hover:text-white transition add-to-cart" data-name="Teddy Bear XL" data-price="24.99">Add to Cart 🛒</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-1 mb-2">
+                                <span class="text-candy-yellow">★★★★★</span>
+                                <span class="text-xs text-gray-400">(312)</span>
+                            </div>
+                            <h3 class="font-fun font-bold text-lg">Teddy Bear XL</h3>
+                            <p class="text-sm text-gray-500 mt-1">Giant plush best friend</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="font-display text-xl text-candy-orange">$24.99</span>
+                                <button class="p-3 bg-candy-orange text-white rounded-full hover:scale-110 transition-transform add-to-cart" data-name="Teddy Bear XL" data-price="24.99">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card group">
+                    <div class="glass rounded-3xl overflow-hidden hover-lift">
+                        <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-violet-100 to-indigo-100 dark:from-violet-900/30 dark:to-indigo-900/30">
+                            <img src="https://images.unsplash.com/photo-1614036417651-efe5912149d8?auto=format&fit=crop&q=80" alt="Space Rocket Kit" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                            <span class="absolute top-4 left-4 px-3 py-1 bg-candy-blue text-white rounded-full text-xs font-bold font-fun">-25%</span>
+                            <button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-gray-800/80 rounded-full hover:bg-candy-pink hover:text-white transition wishlist-btn">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6">
+                                <button class="px-6 py-2 bg-white text-gray-800 rounded-full font-fun font-bold hover:bg-candy-pink hover:text-white transition add-to-cart" data-name="Space Rocket Kit" data-price="39.99">Add to Cart 🛒</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-1 mb-2">
+                                <span class="text-candy-yellow">★★★★★</span>
+                                <span class="text-xs text-gray-400">(176)</span>
+                            </div>
+                            <h3 class="font-fun font-bold text-lg">Space Rocket Kit</h3>
+                            <p class="text-sm text-gray-500 mt-1">Build & launch your rocket</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <div>
+                                    <span class="font-display text-xl text-candy-purple">$39.99</span>
+                                    <span class="text-sm text-gray-400 line-through ml-2">$52.99</span>
+                                </div>
+                                <button class="p-3 bg-candy-purple text-white rounded-full hover:scale-110 transition-transform add-to-cart" data-name="Space Rocket Kit" data-price="39.99">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card group">
+                    <div class="glass rounded-3xl overflow-hidden hover-lift">
+                        <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30">
+                            <img src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&q=80" alt="Dino Robot Toy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                            <span class="absolute top-4 left-4 px-3 py-1 bg-candy-green text-white rounded-full text-xs font-bold font-fun">POPULAR</span>
+                            <button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-gray-800/80 rounded-full hover:bg-candy-pink hover:text-white transition wishlist-btn">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6">
+                                <button class="px-6 py-2 bg-white text-gray-800 rounded-full font-fun font-bold hover:bg-candy-pink hover:text-white transition add-to-cart" data-name="Dino Robot Toy" data-price="49.99">Add to Cart 🛒</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-1 mb-2">
+                                <span class="text-candy-yellow">★★★★★</span>
+                                <span class="text-xs text-gray-400">(203)</span>
+                            </div>
+                            <h3 class="font-fun font-bold text-lg">Dino Robot Toy</h3>
+                            <p class="text-sm text-gray-500 mt-1">Walking talking dinosaur</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="font-display text-xl text-candy-green">$49.99</span>
+                                <button class="p-3 bg-candy-green text-white rounded-full hover:scale-110 transition-transform add-to-cart" data-name="Dino Robot Toy" data-price="49.99">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPECIAL OFFER BANNER -->
+    <section id="offer" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-candy-red via-candy-orange to-candy-yellow"></div>
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-10 left-10 text-6xl floating">🎁</div>
+            <div class="absolute top-20 right-20 text-5xl floating-delay-1">🎉</div>
+            <div class="absolute bottom-10 left-1/4 text-5xl floating-delay-2">⭐</div>
+            <div class="absolute bottom-20 right-1/4 text-6xl floating-delay-3">🎊</div>
+        </div>
+        
+        <!-- Confetti -->
+        <div id="confetti" class="absolute inset-0 pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="glass rounded-3xl p-8 md:p-16 text-center max-w-4xl mx-auto">
+                <span class="inline-block px-4 py-2 bg-white/20 rounded-full font-fun text-sm mb-6 animate-pulse"> WEEKEND SPECIAL 🔥</span>
+                
+                <h2 class="font-display text-4xl md:text-6xl text-white neon-glow mb-4">50% OFF</h2>
+                <p class="font-fun text-xl text-white/90 mb-8">On All Premium Toys This Weekend!</p>
+                
+                <!-- Countdown -->
+                <div class="flex justify-center gap-4 mb-8">
+                    <div class="countdown-item rounded-2xl p-4 w-20 text-center">
+                        <p class="font-display text-3xl text-candy-red" id="days">02</p>
+                        <p class="font-fun text-xs text-gray-500">Days</p>
+                    </div>
+                    <div class="countdown-item rounded-2xl p-4 w-20 text-center">
+                        <p class="font-display text-3xl text-candy-red" id="hours">18</p>
+                        <p class="font-fun text-xs text-gray-500">Hours</p>
+                    </div>
+                    <div class="countdown-item rounded-2xl p-4 w-20 text-center">
+                        <p class="font-display text-3xl text-candy-red" id="minutes">45</p>
+                        <p class="font-fun text-xs text-gray-500">Mins</p>
+                    </div>
+                    <div class="countdown-item rounded-2xl p-4 w-20 text-center">
+                        <p class="font-display text-3xl text-candy-red" id="seconds">30</p>
+                        <p class="font-fun text-xs text-gray-500">Secs</p>
+                    </div>
+                </div>
+                
+                <button class="px-10 py-4 bg-white text-candy-red rounded-2xl font-display text-xl hover:scale-105 transition-transform shadow-xl">
+                    Shop Sale Now 🛒
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOYS & GIRLS SECTIONS -->
+    <div class="grid lg:grid-cols-2 gap-0">
+        <!-- Boys Section -->
+        <section id="boys" class="py-20 relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/50 dark:to-cyan-950/50">
+            <div class="container mx-auto px-4 lg:px-8">
+                <div class="flex items-center gap-4 mb-12">
+                    <span class="text-5xl floating">🤖</span>
+                    <div>
+                        <h2 class="font-display text-3xl md:text-4xl text-candy-blue">Boys Toys</h2>
+                        <p class="font-fun text-gray-500">Robots, Cars & Superheroes!</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass rounded-2xl p-4 hover-lift cursor-pointer">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center text-5xl mb-3">🦸</div>
+                        <h3 class="font-fun font-bold text-center">Action Heroes</h3>
+                        <p class="text-center text-sm text-gray-500">From $12.99</p>
+                    </div>
+                    <div class="glass rounded-2xl p-4 hover-lift cursor-pointer">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-cyan-200 to-cyan-400 flex items-center justify-center text-5xl mb-3">🏎️</div>
+                        <h3 class="font-fun font-bold text-center">Racing Cars</h3>
+                        <p class="text-center text-sm text-gray-500">From $19.99</p>
+                    </div>
+                    <div class="glass rounded-2xl p-4 hover-lift cursor-pointer">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-indigo-200 to-indigo-400 flex items-center justify-center text-5xl mb-3">🚀</div>
+                        <h3 class="font-fun font-bold text-center">Space Toys</h3>
+                        <p class="text-center text-sm text-gray-500">From $24.99</p>
+                    </div>
+                    <div class="glass rounded-2xl p-4 hover-lift cursor-pointer">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-sky-200 to-sky-400 flex items-center justify-center text-5xl mb-3"></div>
+                        <h3 class="font-fun font-bold text-center">Robots</h3>
+                        <p class="text-center text-sm text-gray-500">From $29.99</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Girls Section -->
+        <section id="girls" class="py-20 relative overflow-hidden bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-950/50 dark:to-purple-950/50">
+            <div class="container mx-auto px-4 lg:px-8">
+                <div class="flex items-center gap-4 mb-12">
+                    <span class="text-5xl floating-delay-1"></span>
+                    <div>
+                        <h2 class="font-display text-3xl md:text-4xl gradient-text">Girls Toys</h2>
+                        <p class="font-fun text-gray-500">Unicorns, Dolls & Magic!</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass rounded-2xl p-4 hover-lift cursor-pointer">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-pink-200 to-pink-400 flex items-center justify-center text-5xl mb-3">👸</div>
+                        <h3 class="font-fun font-bold text-center">Princess Dolls</h3>
+                        <p class="text-center text-sm text-gray-500">From $14.99</p>
+                    </div>
+                    <div class="glass rounded-2xl p-4 hover-lift cursor-pointer">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-purple-200 to-purple-400 flex items-center justify-center text-5xl mb-3">🦄</div>
+                        <h3 class="font-fun font-bold text-center">Unicorns</h3>
+                        <p class="text-center text-sm text-gray-500">From $16.99</p>
+                    </div>
+                    <div class="glass rounded-2xl p-4 hover-lift cursor-pointer">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-rose-200 to-rose-400 flex items-center justify-center text-5xl mb-3">🏰</div>
+                        <h3 class="font-fun font-bold text-center">Castles</h3>
+                        <p class="text-center text-sm text-gray-500">From $34.99</p>
+                    </div>
+                    <div class="glass rounded-2xl p-4 hover-lift cursor-pointer">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-fuchsia-200 to-fuchsia-400 flex items-center justify-center text-5xl mb-3">💅</div>
+                        <h3 class="font-fun font-bold text-center">Fashion Sets</h3>
+                        <p class="text-center text-sm text-gray-500">From $22.99</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- INTERACTIVE CARTOON CHARACTERS -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 bg-candy-yellow/20 text-candy-yellow rounded-full font-fun text-sm mb-4">🎭 MEET OUR MASCOTS</span>
+                <h2 class="font-display text-4xl md:text-5xl">Toy Buddies</h2>
+                <p class="font-fun text-gray-500 mt-4">Click on characters to see them dance!</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center group cursor-pointer" id="mascot1">
+                    <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-amber-200 to-amber-400 flex items-center justify-center text-7xl mb-4 group-hover:scale-110 transition-transform shadow-xl relative">
+                        🧸
+                        <span class="absolute -top-2 -right-2 text-2xl sparkle">✨</span>
+                    </div>
+                    <h3 class="font-fun font-bold text-lg">Teddy</h3>
+                    <p class="text-sm text-gray-500">The Dancing Bear</p>
+                </div>
+
+                <div class="text-center group cursor-pointer" id="mascot2">
+                    <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center text-7xl mb-4 group-hover:scale-110 transition-transform shadow-xl relative">
+                        🤖
+                        <span class="absolute -top-2 -right-2 text-2xl sparkle">⚡</span>
+                    </div>
+                    <h3 class="font-fun font-bold text-lg">Bolt</h3>
+                    <p class="text-sm text-gray-500">The Jumping Robot</p>
+                </div>
+
+                <div class="text-center group cursor-pointer" id="mascot3">
+                    <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-purple-200 to-purple-400 flex items-center justify-center text-7xl mb-4 group-hover:scale-110 transition-transform shadow-xl relative">
+                        🚀
+                        <span class="absolute -top-2 -right-2 text-2xl sparkle">🌟</span>
+                    </div>
+                    <h3 class="font-fun font-bold text-lg">Rocket</h3>
+                    <p class="text-sm text-gray-500">The Flying Star</p>
+                </div>
+
+                <div class="text-center group cursor-pointer" id="mascot4">
+                    <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-pink-200 to-pink-400 flex items-center justify-center text-7xl mb-4 group-hover:scale-110 transition-transform shadow-xl relative">
+                        🦄
+                        <span class="absolute -top-2 -right-2 text-2xl sparkle">💫</span>
+                    </div>
+                    <h3 class="font-fun font-bold text-lg">Sparkle</h3>
+                    <p class="text-sm text-gray-500">The Magical Unicorn</p>
+                </div>
+            </div>
+
+            <!-- Speech Bubble -->
+            <div class="mt-12 text-center">
+                <div class="inline-block glass rounded-2xl px-8 py-4 relative">
+                    <p class="font-fun text-lg" id="mascotText">Hi! I'm Teddy! Click me to see me dance! 💃</p>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-white dark:bg-gray-800 rotate-45"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="py-20 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-candy-pink/5 to-transparent"></div>
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 bg-candy-green/20 text-candy-green rounded-full font-fun text-sm mb-4"> REVIEWS</span>
+                <h2 class="font-display text-4xl md:text-5xl">Happy Parents Say</h2>
+            </div>
+
+            <div class="swiper testimonialSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="glass rounded-3xl p-8 max-w-md mx-auto hover-lift">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center text-2xl">👩</div>
+                                <div>
+                                    <h4 class="font-fun font-bold">Sarah Johnson</h4>
+                                    <p class="text-xs text-gray-500">Mother of 2</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-3">
+                                <span class="text-candy-yellow">★★★★★</span>
+                            </div>
+                            <p class="font-fun text-gray-600 dark:text-gray-300">"My kids absolutely LOVE their toys from ToyWonder! The quality is amazing and delivery was super fast. Best toy store ever! 🎉"</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="glass rounded-3xl p-8 max-w-md mx-auto hover-lift">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center text-2xl">👨</div>
+                                <div>
+                                    <h4 class="font-fun font-bold">Mike Chen</h4>
+                                    <p class="text-xs text-gray-500">Father of 3</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-3">
+                                <span class="text-candy-yellow">★★★★★</span>
+                            </div>
+                            <p class="font-fun text-gray-600 dark:text-gray-300">"The RC Monster Truck is incredible! My son plays with it every day. Great customer service too. Highly recommend! 🏎️"</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="glass rounded-3xl p-8 max-w-md mx-auto hover-lift">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-300 to-purple-500 flex items-center justify-center text-2xl">👩</div>
+                                <div>
+                                    <h4 class="font-fun font-bold">Emily Davis</h4>
+                                    <p class="text-xs text-gray-500">Mother of 1</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-3">
+                                <span class="text-candy-yellow">★★★★★</span>
+                            </div>
+                            <p class="font-fun text-gray-600 dark:text-gray-300">"The Barbie Princess House is even better than expected! My daughter's eyes lit up. Beautiful packaging too! 👸"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination mt-8"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-candy-purple via-candy-pink to-candy-orange opacity-90"></div>
+        <div class="absolute inset-0">
+            <div class="floating text-6xl absolute top-10 left-10 opacity-30">🎈</div>
+            <div class="floating-delay-1 text-5xl absolute top-20 right-20 opacity-30">🎁</div>
+            <div class="floating-delay-2 text-5xl absolute bottom-10 left-1/3 opacity-30">⭐</div>
+            <div class="floating-delay-3 text-6xl absolute bottom-20 right-1/3 opacity-30">🎉</div>
+        </div>
+
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="max-w-2xl mx-auto text-center">
+                <span class="text-6xl mb-6 block floating">💌</span>
+                <h2 class="font-display text-4xl md:text-5xl text-white mb-4">Join ToyWonder Family!</h2>
+                <p class="font-fun text-xl text-white/90 mb-8">Get exclusive deals, new arrivals & fun surprises!</p>
+                
+                <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('🎉 Welcome to the ToyWonder family!');">
+                    <input type="email" placeholder="Your email address" class="flex-1 px-6 py-4 rounded-2xl bg-white/20 backdrop-blur border-2 border-white/30 text-white placeholder-white/60 outline-none focus:border-white font-fun" required>
+                    <button type="submit" class="px-8 py-4 bg-white text-candy-pink rounded-2xl font-display text-lg hover:scale-105 transition-transform shadow-xl whitespace-nowrap">
+                        Subscribe 🎉
+                    </button>
+                </form>
+                
+                <p class="text-white/60 text-sm mt-4 font-fun">🔒 We respect your privacy. No spam, just toys!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-950"></div>
+        
+        <!-- Footer Wave -->
+        <div class="relative">
+            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                <path d="M0 50L60 45C120 40 240 30 360 35C480 40 600 60 720 65C840 70 960 60 1080 50C1200 40 1320 30 1380 25L1440 20V100H1380C1320 100 1200 100 1080 100C960 100 840 100 720 100C600 100 480 100 360 100C240 100 120 100 60 100H0V50Z" fill="rgba(20, 15, 30, 1)"/>
+            </svg>
+        </div>
+
+        <div class="relative z-10 pt-16 pb-8">
+            <div class="container mx-auto px-4 lg:px-8">
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                    <!-- Brand -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-3xl"></span>
+                            <span class="font-display text-2xl text-white">ToyWonder</span>
+                        </div>
+                        <p class="text-gray-400 font-fun text-sm leading-relaxed">Magical toys for happy kids. Quality, safety, and endless fun in every box! ✨</p>
+                        <div class="flex gap-3 mt-6">
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-candy-pink transition">
+                                <span class="text-lg">📘</span>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-candy-purple transition">
+                                <span class="text-lg"></span>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-candy-blue transition">
+                                <span class="text-lg">🐦</span>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-candy-red transition">
+                                <span class="text-lg">▶️</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="font-fun font-bold text-white text-lg mb-4">Quick Links</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-candy-pink font-fun text-sm transition">About Us</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-candy-pink font-fun text-sm transition">Shop All</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-candy-pink font-fun text-sm transition">New Arrivals</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-candy-pink font-fun text-sm transition">Sale Items</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-candy-pink font-fun text-sm transition">Gift Cards</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Categories -->
+                    <div>
+                        <h4 class="font-fun font-bold text-white text-lg mb-4">Categories</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-candy-purple font-fun text-sm transition">Action Toys</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-candy-purple font-fun text-sm transition">Dolls & Barbie</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-candy-purple font-fun text-sm transition">LEGO & Blocks</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-candy-purple font-fun text-sm transition">Educational</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-candy-purple font-fun text-sm transition">Plush Bears</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact -->
+                    <div>
+                        <h4 class="font-fun font-bold text-white text-lg mb-4">Contact Us</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-2 text-gray-400 font-fun text-sm">
+                                <span>📍</span> 123 Toy Street, Fun City
+                            </li>
+                            <li class="flex items-center gap-2 text-gray-400 font-fun text-sm">
+                                <span></span> +1 (555) TOY-WOND
+                            </li>
+                            <li class="flex items-center gap-2 text-gray-400 font-fun text-sm">
+                                <span>✉️</span> hello@toywonder.com
+                            </li>
+                            <li class="flex items-center gap-2 text-gray-400 font-fun text-sm">
+                                <span>🕐</span> Mon-Sat: 9AM - 8PM
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-gray-500 font-fun text-sm">© 2024 ToyWonder. All rights reserved. Made with ❤️ for kids everywhere!</p>
+                    <div class="flex gap-6 text-gray-500 font-fun text-sm">
+                        <a href="#" class="hover:text-white transition">Privacy</a>
+                        <a href="#" class="hover:text-white transition">Terms</a>
+                        <a href="#" class="hover:text-white transition">Shipping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Chatbot Button -->
+    <button class="fixed bottom-6 right-6 z-40 w-16 h-16 bg-gradient-to-r from-candy-pink to-candy-purple rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group">
+        <span class="text-3xl group-hover:animate-bounce"></span>
+        <span class="absolute -top-2 -right-2 w-5 h-5 bg-candy-green rounded-full animate-pulse"></span>
+    </button>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="fixed bottom-6 left-6 z-40 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform opacity-0 pointer-events-none">
+        <i data-lucide="chevron-up" class="w-5 h-5"></i>
+    </button>
+
+    <!-- Swiper JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // ==================== LOADING SCREEN ====================
+        const loaderBar = document.getElementById('loaderBar');
+        let progress = 0;
+        const loadInterval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadInterval);
+                setTimeout(() => {
+                    gsap.to('#loadingScreen', {
+                        opacity: 0,
+                        duration: 0.8,
+                        onComplete: () => {
+                            document.getElementById('loadingScreen').style.display = 'none';
+                            initAnimations();
+                        }
+                    });
+                }, 300);
+            }
+            loaderBar.style.width = progress + '%';
+        }, 100);
+
+        // ==================== CURSOR GLOW ====================
+        const cursorGlow = document.getElementById('cursorGlow');
+        if (window.innerWidth > 1024) {
+            document.addEventListener('mousemove', (e) => {
+                cursorGlow.style.left = e.clientX + 'px';
+                cursorGlow.style.top = e.clientY + 'px';
+            });
+        }
+
+        // ==================== NAVBAR SCROLL ====================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        });
+
+        // ==================== DARK MODE ====================
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            lucide.createIcons();
+        });
+
+        // ==================== MOBILE MENU ====================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
+        closeMobileMenu.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        mobileMenuOverlay.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        });
+
+        // ==================== CART SIDEBAR ====================
+        let cart = [];
+        const cartBtn = document.getElementById('cartBtn');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+        const closeCart = document.getElementById('closeCart');
+        const cartItemsEl = document.getElementById('cartItems');
+        const cartCountEl = document.getElementById('cartCount');
+        const cartTotalEl = document.getElementById('cartTotal');
+
+        cartBtn.addEventListener('click', () => cartOverlay.classList.remove('hidden'));
+        closeCartBtn.addEventListener('click', () => cartOverlay.classList.add('hidden'));
+        closeCart.addEventListener('click', () => cartOverlay.classList.add('hidden'));
+
+        function updateCart() {
+            cartCountEl.textContent = cart.length;
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <span class="text-6xl mb-4 block"></span>
+                        <p class="font-fun text-lg">Your cart is empty!</p>
+                        <p class="text-sm mt-2">Add some magical toys!</p>
+                    </div>
+                `;
+            } else {
+                cartItemsEl.innerHTML = cart.map((item, i) => `
+                    <div class="flex items-center gap-4 mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                        <span class="text-3xl">🧸</span>
+                        <div class="flex-1">
+                            <h4 class="font-fun font-bold text-sm">${item.name}</h4>
+                            <p class="text-candy-pink font-bold">$${item.price}</p>
+                        </div>
+                        <button onclick="removeFromCart(${i})" class="p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-full transition text-red-500">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `).join('');
+                lucide.createIcons();
+            }
+            const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+            cartTotalEl.textContent = '$' + total.toFixed(2);
+        }
+
+        window.removeFromCart = function(index) {
+            cart.splice(index, 1);
+            updateCart();
+        };
+
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const name = btn.dataset.name;
+                const price = btn.dataset.price;
+                cart.push({ name, price });
+                updateCart();
+                
+                // Animation feedback
+                gsap.to(btn, { scale: 1.3, duration: 0.1, yoyo: true, repeat: 1 });
+                
+                // Show cart
+                cartOverlay.classList.remove('hidden');
+            });
+        });
+
+        // ==================== COUNTDOWN TIMER ====================
+        function updateCountdown() {
+            const now = new Date();
+            const end = new Date();
+            end.setDate(end.getDate() + 2);
+            end.setHours(23, 59, 59);
+            
+            const diff = end - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // ==================== MASCOT INTERACTIONS ====================
+        const mascotTexts = {
+            mascot1: ["Hi! I'm Teddy! Click me to see me dance! 💃", "I love hugs! 🤗", "Want to play? 🎮"],
+            mascot2: ["Beep boop! I'm Bolt the robot! 🤖", "Systems online! ⚡", "Ready to jump! 🦘"],
+            mascot3: ["Whoosh! I'm Rocket! 🚀", "3... 2... 1... Blast off! 🌟", "To infinity! "],
+            mascot4: ["I'm Sparkle the unicorn! 🦄", "Magic time! 💫", "Rainbow power! "]
+        };
+
+        const mascotAnimations = {
+            mascot1: { rotation: 15, y: -20, scale: 1.1 },
+            mascot2: { rotation: -10, y: -30, scale: 1.2 },
+            mascot3: { rotation: 5, y: -40, scale: 1.3 },
+            mascot4: { rotation: -15, y: -25, scale: 1.1 }
+        };
+
+        ['mascot1', 'mascot2', 'mascot3', 'mascot4'].forEach(id => {
+            const el = document.getElementById(id);
+            let textIndex = 0;
+            
+            el.addEventListener('click', () => {
+                const div = el.querySelector('div');
+                const anim = mascotAnimations[id];
+                
+                gsap.to(div, {
+                    rotation: anim.rotation,
+                    y: anim.y,
+                    scale: anim.scale,
+                    duration: 0.3,
+                    ease: "back.out(1.7)",
+                    yoyo: true,
+                    repeat: 1
+                });
+                
+                textIndex = (textIndex + 1) % mascotTexts[id].length;
+                document.getElementById('mascotText').textContent = mascotTexts[id][textIndex];
+            });
+        });
+
+        // ==================== CONFETTI ====================
+        function createConfetti() {
+            const container = document.getElementById('confetti');
+            const colors = ['#FF6B9D', '#C44DFF', '#4D79FF', '#FFD93D', '#4DFF88', '#FF8C42'];
+            
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.top = Math.random() * 100 + '%';
+                piece.style.opacity = Math.random() * 0.8 + 0.2;
+                container.appendChild(piece);
+                
+                gsap.to(piece, {
+                    x: (Math.random() - 0.5) * 200,
+                    y: (Math.random() - 0.5) * 200,
+                    rotation: Math.random() * 360,
+                    duration: Math.random() * 3 + 2,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            }
+        }
+        createConfetti();
+
+        // ==================== GSAP ANIMATIONS ====================
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Animations
+            gsap.to('.hero-line', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            });
+            gsap.to('.hero-text', { opacity: 1, y: 0, duration: 0.8, delay: 0.8 });
+            gsap.to('.hero-buttons', { opacity: 1, y: 0, duration: 0.8, delay: 1 });
+            gsap.to('.hero-stats', { opacity: 1, y: 0, duration: 0.8, delay: 1.2 });
+            gsap.to('.hero-card-main', { opacity: 1, x: 0, duration: 1, delay: 0.6 });
+            gsap.to('.hero-card-float', { opacity: 1, scale: 1, duration: 0.6, stagger: 0.2, delay: 1 });
+
+            // Categories
+            gsap.utils.toArray('.category-card').forEach((card, i) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%",
+                    },
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.6,
+                    delay: i * 0.1,
+                    ease: "power2.out"
+                });
+            });
+
+            // Product Cards
+            gsap.utils.toArray('.product-card').forEach((card, i) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%",
+                    },
+                    opacity: 0,
+                    y: 60,
+                    duration: 0.7,
+                    delay: i * 0.15,
+                    ease: "power2.out"
+                });
+            });
+
+            // Floating elements parallax
+            gsap.utils.toArray('.floating').forEach(el => {
+                gsap.to(el, {
+                    y: -20,
+                    duration: 3,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            });
+        }
+
+        // ==================== SWIPER TESTIMONIALS ====================
+        new Swiper('.testimonialSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: { delay: 4000 },
+            pagination: { el: '.swiper-pagination', clickable: true },
+            breakpoints: {
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 }
+            }
+        });
+
+        // ==================== BACK TO TOP ====================
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.remove('opacity-0', 'pointer-events-none');
+                backToTop.classList.add('opacity-100');
+            } else {
+                backToTop.classList.add('opacity-0', 'pointer-events-none');
+                backToTop.classList.remove('opacity-100');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ==================== SMOOTH SCROLL ====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ==================== WISHLIST TOGGLE ====================
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const icon = btn.querySelector('svg') || btn.querySelector('i');
+                if (btn.classList.contains('liked')) {
+                    btn.classList.remove('liked');
+                    btn.classList.remove('bg-candy-pink', 'text-white');
+                    btn.classList.add('bg-white/80', 'dark:bg-gray-800/80');
+                } else {
+                    btn.classList.add('liked');
+                    btn.classList.add('bg-candy-pink', 'text-white');
+                    btn.classList.remove('bg-white/80', 'dark:bg-gray-800/80');
+                    gsap.to(btn, { scale: 1.3, duration: 0.15, yoyo: true, repeat: 1 });
+                }
+            });
+        });
+
+        // ==================== PARTICLES ====================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['rgba(255, 107, 157, 0.3)', 'rgba(196, 77, 255, 0.3)', 'rgba(77, 121, 255, 0.3)'];
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 8 + 4 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                container.appendChild(particle);
+                
+                gsap.to(particle, {
+                    x: (Math.random() - 0.5) * 100,
+                    y: (Math.random() - 0.5) * 100,
+                    opacity: Math.random() * 0.5 + 0.2,
+                    duration: Math.random() * 5 + 3,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            }
+        }
+        createParticles();
+
+        // ==================== 3D TILT EFFECT ====================
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
