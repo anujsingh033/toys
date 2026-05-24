@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Remote control monster truck toy">
+  <path d="M45 128c13-35 40-53 80-53h23c25 0 42 20 51 60l10 5v31H31v-29Z" fill="#58e6a7"/>
+  <path d="M83 125c10-21 25-32 47-32h13c16 0 27 11 33 32Z" fill="#e7f9ff"/>
+  <path d="M53 143h143" stroke="#15133c" stroke-opacity=".18" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="70" cy="174" r="33" fill="#15133c"/><circle cx="174" cy="174" r="33" fill="#15133c"/>
+  <circle cx="70" cy="174" r="17" fill="#ff4fb8"/><circle cx="174" cy="174" r="17" fill="#ff4fb8"/>
+  <path d="M94 89 80 65M151 88l13-24" stroke="#8b5cf6" stroke-width="8" stroke-linecap="round"/>
+  <path d="M97 143h48" stroke="#ffe35c" stroke-width="9" stroke-linecap="round"/>
+</svg>

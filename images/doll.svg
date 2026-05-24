@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Cartoon doll toy">
+  <defs>
+    <linearGradient id="dress" x1="75" x2="165" y1="119" y2="220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff8bd6"/><stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <circle cx="120" cy="76" r="50" fill="#5a3424"/>
+  <circle cx="120" cy="84" r="38" fill="#ffd3b6"/>
+  <path d="M82 82c19-6 35-19 44-39 10 24 28 35 50 39-2-36-26-57-56-57-31 0-55 21-58 57Z" fill="#6d3c26"/>
+  <circle cx="106" cy="86" r="6" fill="#21153f"/><circle cx="136" cy="86" r="6" fill="#21153f"/>
+  <path d="M109 104c8 7 17 7 25 0" fill="none" stroke="#d84f7a" stroke-linecap="round" stroke-width="5"/>
+  <path d="M92 124h56l33 88H59Z" fill="url(#dress)"/>
+  <path d="M80 133 42 164" stroke="#ffd3b6" stroke-width="16" stroke-linecap="round"/>
+  <path d="M160 133l38 31" stroke="#ffd3b6" stroke-width="16" stroke-linecap="round"/>
+  <path d="M97 128c7 12 39 12 46 0" fill="#fff" opacity=".8"/>
+  <circle cx="94" cy="94" r="8" fill="#ff8bbf" opacity=".55"/><circle cx="146" cy="94" r="8" fill="#ff8bbf" opacity=".55"/>
+</svg>

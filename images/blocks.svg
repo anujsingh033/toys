@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Colorful toy blocks">
+  <rect x="28" y="124" width="70" height="64" rx="12" fill="#ff4fb8"/>
+  <rect x="85" y="86" width="70" height="102" rx="12" fill="#ffe35c"/>
+  <rect x="142" y="116" width="70" height="72" rx="12" fill="#45caff"/>
+  <circle cx="51" cy="143" r="8" fill="#fff" opacity=".65"/><circle cx="75" cy="143" r="8" fill="#fff" opacity=".65"/>
+  <circle cx="108" cy="106" r="8" fill="#fff" opacity=".65"/><circle cx="132" cy="106" r="8" fill="#fff" opacity=".65"/>
+  <circle cx="165" cy="136" r="8" fill="#fff" opacity=".65"/><circle cx="189" cy="136" r="8" fill="#fff" opacity=".65"/>
+  <path d="M32 188h176" stroke="#15133c" stroke-opacity=".14" stroke-width="10" stroke-linecap="round"/>
+</svg>

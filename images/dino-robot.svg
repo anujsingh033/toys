@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Dino robot toy">
+  <path d="M52 141c6-46 39-72 88-72 35 0 61 19 73 54-21-6-38-3-50 9 16 11 27 26 34 45-35 4-67 0-96-13l-18 39H54l14-51Z" fill="#58e6a7"/>
+  <path d="M107 72 95 42l30 24 11-33 13 34 29-24-10 32" fill="#8b5cf6"/>
+  <circle cx="155" cy="103" r="9" fill="#15133c"/>
+  <path d="M177 125h33" stroke="#15133c" stroke-width="7" stroke-linecap="round"/>
+  <path d="M111 164v40M151 169v35" stroke="#15133c" stroke-width="15" stroke-linecap="round"/>
+  <path d="M61 141 30 118" stroke="#58e6a7" stroke-width="20" stroke-linecap="round"/>
+  <path d="M92 101h36M85 122h54" stroke="#fff" stroke-opacity=".7" stroke-width="7" stroke-linecap="round"/>
+</svg>

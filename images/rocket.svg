@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Cartoon rocket toy">
+  <defs>
+    <linearGradient id="body" x1="77" x2="169" y1="25" y2="183" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff"/><stop offset="1" stop-color="#bdecff"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="88" x2="148" y1="170" y2="232" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffe35c"/><stop offset=".52" stop-color="#ff7a18"/><stop offset="1" stop-color="#ff3131"/>
+    </linearGradient>
+  </defs>
+  <path d="M78 156 34 183l31-56Z" fill="#8b5cf6"/>
+  <path d="M162 156l44 27-31-56Z" fill="#ff4fb8"/>
+  <path d="M120 21c47 40 57 101 35 151H85C63 122 73 61 120 21Z" fill="url(#body)"/>
+  <path d="M120 21c20 17 34 39 41 62H79c7-23 21-45 41-62Z" fill="#ff4fb8"/>
+  <circle cx="120" cy="101" r="27" fill="#45caff"/>
+  <circle cx="120" cy="101" r="16" fill="#e9fbff"/>
+  <path d="M93 172h54c-2 25-12 46-27 59-15-13-25-34-27-59Z" fill="url(#flame)"/>
+  <path d="M103 172h34c-1 16-7 29-17 39-10-10-16-23-17-39Z" fill="#fff2a3"/>
+</svg>

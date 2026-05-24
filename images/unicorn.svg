@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Smiling unicorn toy">
+  <path d="M89 72 119 19l16 62Z" fill="#ffe35c"/>
+  <path d="M121 23c-2 22-8 41-23 56" stroke="#ff4fb8" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="122" cy="125" rx="72" ry="63" fill="#fff"/>
+  <path d="M72 93c-22 10-36 29-40 58 20-15 38-17 54-5Z" fill="#f9d5ff"/>
+  <path d="M170 93c22 10 36 29 40 58-20-15-38-17-54-5Z" fill="#f9d5ff"/>
+  <path d="M75 75c20-30 61-38 92-10-37-2-65 9-84 34Z" fill="#ff4fb8"/>
+  <path d="M91 66c15-18 44-27 77-12-28 5-48 17-62 36Z" fill="#45caff"/>
+  <circle cx="97" cy="127" r="8" fill="#15133c"/><circle cx="147" cy="127" r="8" fill="#15133c"/>
+  <circle cx="90" cy="143" r="8" fill="#ffb5dc"/><circle cx="154" cy="143" r="8" fill="#ffb5dc"/>
+  <path d="M106 154c9 8 21 8 30 0" fill="none" stroke="#15133c" stroke-linecap="round" stroke-width="5"/>
+  <path d="M170 151c19 4 30 17 31 39-17-11-33-14-48-9Z" fill="#8b5cf6"/>
+</svg>

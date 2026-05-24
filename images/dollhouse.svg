@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Princess doll house toy">
+  <path d="M35 108 120 36l85 72v96H35Z" fill="#ff8bd6"/>
+  <path d="M120 36 20 121h32l68-58 68 58h32Z" fill="#8b5cf6"/>
+  <rect x="63" y="127" width="38" height="39" rx="8" fill="#fff3b0"/>
+  <rect x="139" y="127" width="38" height="39" rx="8" fill="#fff3b0"/>
+  <rect x="98" y="154" width="44" height="50" rx="18" fill="#45caff"/>
+  <path d="M120 154v50" stroke="#15133c" stroke-opacity=".18" stroke-width="5"/>
+  <circle cx="134" cy="180" r="4" fill="#fff"/>
+  <path d="M63 146h38M139 146h38" stroke="#ff4fb8" stroke-width="5"/>
+  <circle cx="120" cy="100" r="18" fill="#fff"/>
+  <path d="M111 101c6 6 12 6 18 0" stroke="#ff4fb8" stroke-width="5" stroke-linecap="round"/>
+</svg>
